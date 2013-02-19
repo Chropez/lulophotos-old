@@ -13,6 +13,11 @@ namespace lulophotos
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //routes.MapRoute(
+            //            "ViewGallery",                                              // Route name
+            //            "{controller}/{action}/{galleryId}/{item}",                           // URL with parameters
+            //            new { controller = "Home", action = "Index", galleryId = "", item = "" }  // Parameter defaults
+            //        );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
