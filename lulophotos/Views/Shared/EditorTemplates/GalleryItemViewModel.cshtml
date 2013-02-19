@@ -1,0 +1,27 @@
+﻿@model  lulophotos.ViewModels.GalleryItemViewModel
+
+<h4>Item </h4>
+    <div style="border:1px grey solid; padding:30px" class="GalleryItem">
+        
+        @Html.LinkToRemoveNestedForm("Remove", "div.GalleryItem", "input.mark-for-delete")
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.GalleryItem.Title)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.GalleryItem.Title)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.GalleryItem.Description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.GalleryItem.Description)
+        </div>
+
+        @Html.HiddenFor(model => model.GalleryItem.Delete, new { @class = "mark-for-delete" })
+
+        
+
+
+    </div>        

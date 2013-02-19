@@ -1,0 +1,165 @@
+﻿@model lulophotos.ViewModels.GalleryViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm("Create", "Gallery", FormMethod.Post,
+        new { @encType = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken() 
+    <fieldset>
+        <legend>Gallery</legend>
+
+        @Html.ValidationSummary(true)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Gallery.Title)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Gallery.Title)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Gallery.Description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Gallery.Description)
+        </div>
+        
+        <div id="GalleryItems">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.GalleryItemViewModels)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.GalleryItemViewModels)
+            </div>
+        </div>
+        <input type="button" id="fileUploadButton" value="Add new photos or videos"></input>
+
+        <div style="display:none">
+            <input name="files" type="file" class="fileUpload" multiple="true" value="Add a new picture or video"/>
+
+        </div>
+        <input name="files" type="file" class="fileUpload2"  value="Add a new picture or video"/>
+        
+        <div id="action">KLickk</div>
+        @Html.ActionLink("Add GalleryItem", "AddGalleryItem", null, new { id = "ajax" })
+        <div id="galleryItemsPlaceHolder">
+
+        </div>
+        
+       @* @Html.LinkToAddNestedForm("Add a GalleryItem" , 
+        "#GalleryItems", ".GalleryItem", 
+        "GalleryItemViewModels" ,typeof(lulophotos.ViewModels.GalleryItemViewModel))*@
+        <hr />
+
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+
+    </fieldset>
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script type="text/javascript">
+        function removeNestedForm(element, container, deleteElement) {
+            $container = $(element).parents(container);
+            $container.find(deleteElement).val("True");
+            $container.hide();
+        }
+
+        function addNestedForm(container, counter, ticks, content) {
+
+            var nextIndex = $(counter).length;
+
+            var pattern = new RegExp(ticks, "gi");
+
+            content = content.replace(pattern, nextIndex);
+
+            $(container).append(content);
+
+        }
+
+        $(document).ready(function () {
+
+           
+
+            $("#ajax").click(function () {
+                $.ajax({
+                    url: this.href,
+                    cache: false,
+                    success : function(html) { $("#galleryItemsPlaceHolder").append(html); }
+                });
+                return false;
+            });
+
+            $("#action").click(function () {
+                var fileInput = $(".fileUpload")[0];
+
+                var file2 = fileInput.files[1];
+
+                var newFileList = new Array();
+                newFileList.push(file2);
+                var fileInput2 = $(".fileUpload2")[0];
+                fileInput2.files = newFileList;
+            });
+
+            $('#fileUploadButton')
+                .click(function(){
+                    $(".fileUpload").click();
+                })
+                .submit(function(event){
+                    event.preventDefault();
+                    $(".fileUpload").click();
+                });
+
+            
+            $(".fileUpload").change(function () {
+                if (this.files && this.files.length > 0)
+                    addGalleryItems(this.files);
+                else
+                    alert("nothing happens");
+                
+            })
+        });
+
+        function addGalleryItems(files) {
+
+            for (var i = 0; i < files.length ; i++) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var newImage = $("<img src=''/>")
+                        .attr('src', e.target.result)
+                        .width(150)
+                        .height(200);
+
+                    $('#galleryItemsPlaceHolder').append(newImage);
+
+                };
+
+                reader.readAsDataURL(files[i]);
+                
+            }
+
+        }
+
+        
+
+    </script>
+}
+
+
+

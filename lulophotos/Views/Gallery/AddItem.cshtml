@@ -1,0 +1,37 @@
+﻿
+@model lulophotos.ViewModels.GalleryViewModel
+@{
+    ViewBag.Title = "Add photo or video";
+}
+
+<h2>Add Photo or Video</h2>
+@using (Html.BeginForm("CreateCL", "Gallery", FormMethod.Post,
+        new { @encType = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.title) 
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.title) 
+    </div>
+    
+    <div>
+        @Html.EditorFor(model => model.gallery) 
+    </div>  
+    
+    @*
+    
+    <div class="editor-label">
+        @Html.LabelFor(model => model.GalleryItems) 
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.GalleryItems, "GalleryItemViewModel") 
+    </div>*@
+    
+
+        <input type="submit" value="Upload" />
+    
+}
+        
